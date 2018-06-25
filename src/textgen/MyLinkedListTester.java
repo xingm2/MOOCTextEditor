@@ -23,11 +23,12 @@ public class MyLinkedListTester {
 	MyLinkedList<Integer> longerList;
 	MyLinkedList<Integer> list1;
 	
+	
 	/**
 	 * @throws java.lang.Exception
 	 */
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws Exception { //declare they throw exceptions, checked exception
 		// Feel free to use these lists, or add your own
 	    shortList = new MyLinkedList<String>();
 		shortList.add("A");
@@ -42,7 +43,8 @@ public class MyLinkedListTester {
 		list1.add(65);
 		list1.add(21);
 		list1.add(42);
-		
+
+	    
 	}
 
 	
@@ -115,6 +117,20 @@ public class MyLinkedListTester {
 		assertEquals("Remove: check size is correct ", 2, list1.size());
 		
 		// TODO: Add more tests here
+		 try {
+				list1.remove(-1);
+				fail("Check out of bounds");
+			}
+			catch (IndexOutOfBoundsException e) {
+				
+			}
+		 try {
+				list1.remove(4);
+				fail("Check out of bounds");
+			}
+			catch (IndexOutOfBoundsException e) {
+				
+			}
 	}
 	
 	/** Test adding an element into the end of the list, specifically
@@ -123,7 +139,20 @@ public class MyLinkedListTester {
 	@Test
 	public void testAddEnd()
 	{
-        // TODO: implement this test
+        // TODOdone: implement this test
+		try {
+			emptyList.add(null);
+			fail("Check Null Pointers");
+		}
+		catch (NullPointerException e) {
+			
+		}
+
+        list1.add(77);
+        assertEquals("Check 77", "77", list1.get(3).toString());
+        
+        emptyList.add(88);
+        assertEquals("Check 88","88",emptyList.get(0).toString());
 		
 	}
 
@@ -132,8 +161,12 @@ public class MyLinkedListTester {
 	@Test
 	public void testSize()
 	{
-		// TODO: implement this test
-	}
+		// TODOdone: implement this test
+	    //System.out.println(list1);
+	    //System.out.println(emptyList);
+		assertEquals("Check Size", "3", String.valueOf(list1.size()));
+		assertEquals("Check Size", 0, emptyList.size());
+    }
 
 	
 	
@@ -141,20 +174,82 @@ public class MyLinkedListTester {
 	 * specifically:
 	 * public void add(int index, E element)
 	 * */
+	
 	@Test
 	public void testAddAtIndex()
 	{
         // TODO: implement this test
+		try {
+			emptyList.add(0,null);
+			fail("Check Null Pointers");
+		}
+		catch (NullPointerException e) {
+			
+		}
 		
+        try {
+			emptyList.add(-1,99);
+			fail("Check out of bounds");
+		}
+		catch (IndexOutOfBoundsException e) {
+			
+		}
+        try {
+			list1.add(10,66);
+			fail("Check out of bounds");
+		}
+		catch (IndexOutOfBoundsException e) {
+			
+		}
+		list1.add(3,78);
+		assertEquals("Check add at index last", "78", list1.get(3).toString());
+		
+        list1.add(1,88);
+        System.out.println(list1);
+		assertEquals("Check add at index 1", "88", list1.get(1).toString());
+		assertEquals("Check add at index 1 part2", "78", list1.get(4).toString());
+        
+        
 	}
+	
 	
 	/** Test setting an element in the list */
 	@Test
 	public void testSet()
 	{
 	    // TODO: implement this test
-	    
+		try {
+			list1.set(0,null);
+			fail("Check Null Pointers");
+		}
+		catch (NullPointerException e) {
+			
+		}
+		
+        try {
+			list1.set(-1,66);
+			fail("Check out of bounds");
+		}
+		catch (IndexOutOfBoundsException e) {
+			
+		}
+        try {
+			list1.set(10,66);
+			fail("Check out of bounds");
+		}
+		catch (IndexOutOfBoundsException e) {
+			
+		}
+        
+		assertEquals("Check set 1", (Integer)65, list1.get(0));
+		list1.set(0, 66);
+		assertEquals("Check set 2", (Integer)66, list1.get(0));
+		
+
 	}
+
+    //@Test 
+    //public void testARA
 	
 	
 	// TODO: Optionally add more test methods.

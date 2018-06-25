@@ -42,6 +42,7 @@ public class MyLinkedListGrader {
 	
 	public void doTest()
 	{
+		System.out.println("Start");
                 int incorrect = 0;
                 int tests = 0;
                 String feedback = "";
@@ -51,10 +52,12 @@ public class MyLinkedListGrader {
 			e.printStackTrace();
 			return;
 		}
+		System.out.println("Start");
 		MyLinkedList<Integer> lst = new MyLinkedList<Integer>();
 		int nums[] = {1, 2, 3, 4, 5};
 		
                 feedback += "** Test #1: Adding to end of list...";
+                System.out.println(feedback);
 		for (int i : nums) {
 			lst.add(i);
                 }
