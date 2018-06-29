@@ -44,12 +44,12 @@ public abstract class Document {
 	
 	// This is a helper function that returns the number of syllables
 	// in a word.  You should write this and use it in your 
-	// BasicDocument class.
-	protected static int countSyllables(String word)
+	// BasicDocument class
+	protected static int countSyllables(String word)  // @param word: One single word to count the syllables in
 	{
 	    //System.out.print("Counting syllables in " + word + "...");
-		int numSyllables = 0;
-		boolean newSyllable = true;
+		int numSyllables = 0; //@return
+		boolean newSyllable = true; // Indicates that 1. last syllable finished. 2. ready to count a new one
 		String vowels = "aeiouy";
 		char[] cArray = word.toCharArray();
 		for (int i = 0; i < cArray.length; i++)
@@ -58,7 +58,7 @@ public abstract class Document {
 		    		&& newSyllable && numSyllables > 0) {
                 numSyllables--;
             }
-		    if (newSyllable && vowels.indexOf(Character.toLowerCase(cArray[i])) >= 0) {
+		    if (newSyllable && vowels.indexOf(Character.toLowerCase(cArray[i])) >= 0) { // indexOf, see if a char belong to a string
 				newSyllable = false;
 				numSyllables++;
 			}
@@ -131,7 +131,7 @@ public abstract class Document {
 	public double getFleschScore()
 	{
 		double wordCount = (double)getNumWords();
-		return 206.835 - (1.015 * ((wordCount)/getNumSentences())) 
+		return 206.835 - (1.015 * ((wordCount)/getNumSentences())) // For consistency, can use (double)getNumSentences() here too. 
 				- (84.6 * (((double)getNumSyllables())/wordCount));
 	
 	}
