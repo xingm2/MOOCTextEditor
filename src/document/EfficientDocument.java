@@ -51,10 +51,10 @@ public class EfficientDocument extends Document {
 		// MAKE SURE YOU UNDERSTAND THIS LINE BEFORE YOU CODE THE REST
 		// OF THIS METHOD.
 		List<String> tokens = getTokens("[!?.]+|[a-zA-Z]+");
-		//for (String toks : tokens)
-        //{
-        //    System.out.println(toks);
-        //}
+		for (String toks : tokens)
+        {
+            System.out.println(toks);
+        }
 		// TODO: Finish this method.  Remember the countSyllables method from 
 		// Document.  That will come in handy here.  isWord defined above will also help.
         int cnt = 0;
@@ -65,7 +65,7 @@ public class EfficientDocument extends Document {
                 numSyllables += countSyllables(tks);
                 numWords += 1;
                 if (cnt == (tokens.size()-1)){
-                    // This word is the last token
+                    // This word is the last token. The last line should be a sentence even without a punctuation.
                     numSentences += 1;
                 }
             } else {
