@@ -41,7 +41,7 @@ public class MyLinkedList<E> extends AbstractList<E> {
         LLNode<E> newAdd = new LLNode<E> (element);
         // Link new node in
         newAdd.prev      = tail.prev;
-        newAdd.next      = newAdd.prev.next;
+        newAdd.next      = newAdd.prev.next; // or: tail could be used here? 
         tail.prev        = newAdd;
         newAdd.prev.next = newAdd;
         // Update Size
@@ -56,13 +56,13 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	{
 		// TODOdone: Implement this method.
 
-        if (index < 0 || index > (size - 1) ){
+        if (index < 0 || index > (size - 1) ){ // Throws IOOBE if the index is out of bounds
             throw new IndexOutOfBoundsException("IOOBE get.");
         }
 
         int cnt = 0;
         LLNode<E> getNode = head;
-        while (cnt <= index){
+        while (cnt <= index){ // Note that head is not the element at index 0. head.next is.
             getNode = getNode.next;
             cnt++;
         }
@@ -87,8 +87,8 @@ public class MyLinkedList<E> extends AbstractList<E> {
         }
 
         
-        if (index == size){
-            this.add(element);
+        if (index == size){  // same to: Appends to the end of the list (Which is add())
+            this.add(element);  
         } else {
             int cnt = 0;
             LLNode<E> n = new LLNode<E> (element);
@@ -199,7 +199,8 @@ class LLNode<E>
 		this.prev = null;
 		this.next = null;
 	}
-
+    
+    // Additional Constructor for LLNode
 	public LLNode(E e, LLNode<E> prevNode, LLNode<E> nextNode) 
 	{
 		this(e);
