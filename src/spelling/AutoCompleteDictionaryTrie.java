@@ -3,12 +3,15 @@ package spelling;
 import java.util.List;
 import java.util.Set;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Queue;
 
 /** 
  * An trie data structure that implements the Dictionary and the AutoComplete ADT
- * @author You
+ * @author Menglong Xing
  *
  */
 public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
@@ -39,8 +42,29 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	 */
 	public boolean addWord(String word)
 	{
-	    //TODO: Implement this method.
-	    return false;
+	    //TODOdone: Implement this method.
+	    TrieNode node = root;
+
+	    for (Character c : word.toLowerCase().toCharArray()){
+            TrieNode child = node.getChild(c);
+
+            if (child != null){   // Still have child to go through
+                node = child;
+            } else {  // End of a branch
+            	node = node.insert(c);
+            }
+
+	    }
+
+        // Now the node is pointing to a endsWord (May already exist, maybe was added)
+        if (node.endsWord()){  // already
+            return false;
+        } else {  // newly added. Because isWord inialized to be false
+            node.setEndsWord(true);
+            size++;
+            return true;
+        }
+
 	}
 	
 	/** 
@@ -49,8 +73,8 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	 */
 	public int size()
 	{
-	    //TODO: Implement this method
-	    return 0;
+	    //TODOdone: Implement this method
+	    return size;
 	}
 	
 	
@@ -59,8 +83,27 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	@Override
 	public boolean isWord(String s) 
 	{
-	    // TODO: Implement this method
-		return false;
+	    // TODOdone: Implement this method
+	    TrieNode node = root;
+
+	    for (Character c : s.toLowerCase().toCharArray()){
+            TrieNode child = node.getChild(c);
+
+            if (child != null){   // Still have child to go through
+                node = child;
+            } else {  // End of a branch
+            	return false;
+            }
+
+	    }
+
+        // Now the node is pointing to a endsWord (May already exist, maybe was added)
+        if (node.endsWord()){  // already
+            return true;
+        } else {  // newly added. Because isWord inialized to be false
+            return false;
+        }
+	    
 	}
 
 	/** 
@@ -86,22 +129,56 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
      */@Override
      public List<String> predictCompletions(String prefix, int numCompletions) 
      {
-    	 // TODO: Implement this method
+    	 // TODOdone: Implement this method
     	 // This method should implement the following algorithm:
     	 // 1. Find the stem in the trie.  If the stem does not appear in the trie, return an
     	 //    empty list
     	 // 2. Once the stem is found, perform a breadth first search to generate completions
     	 //    using the following algorithm:
-    	 //    Create a queue (LinkedList) and add the node that completes the stem to the back
+    	 //    2.1 Create a queue (LinkedList) and add the node that completes the stem to the back
     	 //       of the list.
-    	 //    Create a list of completions to return (initially empty)
-    	 //    While the queue is not empty and you don't have enough completions:
-    	 //       remove the first Node from the queue
-    	 //       If it is a word, add it to the completions list
-    	 //       Add all of its child nodes to the back of the queue
+    	 //    2.2 Create a list of completions to return (initially empty)
+    	 //    2.3 While the queue is not empty and you don't have enough completions:
+    	 //       2.3.1 remove the first Node from the queue
+    	 //       2.3.2 If it is a word, add it to the completions list
+    	 //       2.3.3 Add all of its child nodes to the back of the queue
     	 // Return the list of completions
+         TrieNode node = root;
+         
+         //1
+	     for (Character c : prefix.toLowerCase().toCharArray()){
+            TrieNode child = node.getChild(c);
+
+            if (child != null){   // Still have child to go through
+                node = child;
+            } else {
+            	return Collections.emptyList(); // return empty list if the stem does not appear
+            	//return new ArrayList<String>(); // return empty list if the stem does not appear
+
+            }
+	     }
+
+         //2
+         Queue<TrieNode> queue = new LinkedList<TrieNode>(); //2.1
+         List<String> completions = new LinkedList<String>(); //2.2
+         queue.offer(node);
+
+         while(!queue.isEmpty() && numCompletions > 0){ //2.3
+             
+             TrieNode t = queue.poll(); //2.3.1
+
+             if (t.endsWord()){  // 2.3.2
+             	completions.add(t.getText());
+             	--numCompletions;
+             }
+
+             for (Character c : t.getValidNextCharacters()){  // 2.3.3
+             	queue.offer(t.getChild(c));
+             }
+
+         }
     	 
-         return null;
+    	 return completions;
      }
 
  	// For debugging
@@ -121,7 +198,7 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
  		TrieNode next = null;
  		for (Character c : curr.getValidNextCharacters()) {
  			next = curr.getChild(c);
- 			printNode(next);
+ 			printNode(next);  //recursive
  		}
  	}
  	
